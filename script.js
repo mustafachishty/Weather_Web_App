@@ -40,9 +40,17 @@ scrollRight.addEventListener('click', () => {
 });
 
 // Initialize
+console.log('WeatherHub initializing...');
+console.log('CONFIG:', CONFIG);
+console.log('DOM Elements check:');
+console.log('- forecastList:', document.getElementById('forecast-list'));
+console.log('- searchBtn:', document.getElementById('search-btn'));
+console.log('- cityInput:', document.getElementById('city-input'));
+
 initApp();
 
 function initApp() {
+    console.log('App initialized with city:', currentCity);
     renderFavorites();
     fetchWeather(currentCity);
 }
@@ -58,17 +66,27 @@ function handleSearch() {
 async function fetchWeather(city) {
     showLoading(true);
     try {
+        console.log('Fetching weather for:', city);
+        console.log('API URL:', `${CONFIG.API_BASE_URL}/forecast.json?key=${apiKey.substring(0, 10)}...&q=${city}&days=${CONFIG.FORECAST_DAYS}&aqi=yes`);
+        
         const response = await fetch(
             `${CONFIG.API_BASE_URL}/forecast.json?key=${apiKey}&q=${city}&days=${CONFIG.FORECAST_DAYS}&aqi=yes`
         );
         
-        if (!response.ok) throw new Error('City not found');
+        if (!response.ok) {
+            console.error('API Response Error:', response.status, response.statusText);
+            throw new Error('City not found');
+        }
         
         const data = await response.json();
+        console.log('Weather data received:', data);
+        console.log('Forecast days available:', data.forecast?.forecastday?.length);
+        
         currentCity = data.location.name;
         updateUI(data);
         updateFavoriteButton();
     } catch (error) {
+        console.error('Fetch weather error:', error);
         alert('City not found! Please try again.');
     } finally {
         showLoading(false);
@@ -123,27 +141,46 @@ function updateUI(data) {
 }
 
 function renderForecast(forecastDays) {
+    if (!forecastList) {
+        console.error('Forecast list element not found!');
+        return;
+    }
+    
     forecastList.innerHTML = '';
     
+    if (!forecastDays || !Array.isArray(forecastDays) || forecastDays.length === 0) {
+        console.error('No forecast data available:', forecastDays);
+        forecastList.innerHTML = '<p style="color: white; padding: 2rem;">No forecast data available</p>';
+        return;
+    }
+    
+    console.log('Rendering forecast for', forecastDays.length, 'days');
+    
     forecastDays.forEach((day, index) => {
-        const date = new Date(day.date);
-        const dayName = index === 0 ? 'Today' : formatDayName(date);
-        
-        const card = document.createElement('div');
-        card.className = 'forecast-card glass';
-        card.innerHTML = `
-            <div class="forecast-day">${dayName}</div>
-            <div class="forecast-date">${formatShortDate(date)}</div>
-            <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}">
-            <div class="forecast-temp">${Math.round(day.day.avgtemp_c)}°</div>
-            <div class="forecast-condition">${day.day.condition.text}</div>
-            <div class="forecast-temp-range">
-                <span><i class="fas fa-arrow-up"></i> ${Math.round(day.day.maxtemp_c)}°</span>
-                <span><i class="fas fa-arrow-down"></i> ${Math.round(day.day.mintemp_c)}°</span>
-            </div>
-        `;
-        forecastList.appendChild(card);
+        try {
+            const date = new Date(day.date);
+            const dayName = index === 0 ? 'Today' : formatDayName(date);
+            
+            const card = document.createElement('div');
+            card.className = 'forecast-card glass';
+            card.innerHTML = `
+                <div class="forecast-day">${dayName}</div>
+                <div class="forecast-date">${formatShortDate(date)}</div>
+                <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}">
+                <div class="forecast-temp">${Math.round(day.day.avgtemp_c)}°</div>
+                <div class="forecast-condition">${day.day.condition.text}</div>
+                <div class="forecast-temp-range">
+                    <span><i class="fas fa-arrow-up"></i> ${Math.round(day.day.maxtemp_c)}°</span>
+                    <span><i class="fas fa-arrow-down"></i> ${Math.round(day.day.mintemp_c)}°</span>
+                </div>
+            `;
+            forecastList.appendChild(card);
+        } catch (error) {
+            console.error('Error rendering forecast day:', error, day);
+        }
     });
+    
+    console.log('Forecast rendered successfully. Total cards:', forecastList.children.length);
 }
 
 function toggleFavorite() {
