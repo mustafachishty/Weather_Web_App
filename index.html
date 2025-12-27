@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherHub - Professional Weather Dashboard</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%23667eea;stop-opacity:1' /><stop offset='100%' style='stop-color:%23764ba2;stop-opacity:1' /></linearGradient></defs><circle cx='50' cy='50' r='48' fill='url(%23grad)'/><path d='M35 45 Q35 35 45 35 Q45 25 55 25 Q65 25 65 35 Q75 35 75 45 Q75 55 65 55 L35 55 Q25 55 25 45 Q25 35 35 35' fill='white' opacity='0.9'/><circle cx='70' cy='30' r='8' fill='%23ffd700'/></svg>" type="image/svg+xml">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar glass">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-cloud-sun"></i>
+                <h1>Weather<span>Hub</span></h1>
+            </div>
+            <div class="nav-search">
+                <input type="text" id="city-input" placeholder="Search for a city...">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <button id="favorites-toggle" class="nav-btn glass">
+                <i class="fas fa-star"></i> Favorites
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Favorites Sidebar -->
+        <aside id="favorites-sidebar" class="favorites-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-star"></i> Favorite Locations</h2>
+                <button id="close-sidebar" class="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="favorites-list" class="favorites-list">
+                <p class="empty-favorites">No favorite locations yet. Add one!</p>
+            </div>
+        </aside>
+
+        <!-- Main Weather Dashboard -->
+        <main class="dashboard">
+            <!-- Current Weather Section -->
+            <section class="current-section">
+                <div class="current-weather-card glass">
+                    <div class="weather-header">
+                        <div class="location-info">
+                            <h2 id="city-name">London</h2>
+                            <p id="date-text">Friday, December 27, 2025</p>
+                            <p id="local-time" class="local-time"></p>
+                        </div>
+                        <button id="add-favorite-btn" class="favorite-btn" title="Add to favorites">
+                            <i class="far fa-star"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="current-weather-main">
+                        <div class="temp-section">
+                            <img id="weather-icon" src="" alt="Weather Icon">
+                            <div class="temp-display">
+                                <h1 id="temp">19°</h1>
+                                <div class="temp-range">
+                                    <span><i class="fas fa-arrow-up"></i> <b id="max-temp">24°</b></span>
+                                    <span><i class="fas fa-arrow-down"></i> <b id="min-temp">18°</b></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="condition-section">
+                            <h3 id="condition-text">Partly Cloudy</h3>
+                            <p id="feels-like">Feels like <span id="feels-like-temp">17°</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather Details Grid -->
+                <div class="details-grid">
+                    <div class="detail-card glass">
+                        <div class="detail-icon"><i class="fas fa-wind"></i></div>
+                        <div class="detail-info">
+                            <p class="detail-label">Wind Speed</p>
+                            <h3 id="wind-speed">15 km/h</h3>
+                            <p id="wind-direction" class="detail-sub">NW</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card glass">
+                        <div class="detail-icon"><i class="fas fa-tint"></i></div>
+                        <div class="detail-info">
+                            <p class="detail-label">Humidity</p>
+                            <h3 id="humidity">65%</h3>
+                            <p class="detail-sub">Comfortable</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card glass">
+                        <div class="detail-icon"><i class="fas fa-eye"></i></div>
+                        <div class="detail-info">
+                            <p class="detail-label">Visibility</p>
+                            <h3 id="visibility">10 km</h3>
+                            <p class="detail-sub">Excellent</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card glass">
+                        <div class="detail-icon"><i class="fas fa-compress-arrows-alt"></i></div>
+                        <div class="detail-info">
+                            <p class="detail-label">Pressure</p>
+                            <h3 id="pressure">1013 mb</h3>
+                            <p class="detail-sub">Normal</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card glass">
+                        <div class="detail-icon"><i class="fas fa-sun"></i></div>
+                        <div class="detail-info">
+                            <p class="detail-label">UV Index</p>
+                            <h3 id="uv-index">4</h3>
+                            <p id="uv-level" class="detail-sub">Moderate</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card glass">
+                        <div class="detail-icon"><i class="fas fa-smog"></i></div>
+                        <div class="detail-info">
+                            <p class="detail-label">Air Quality</p>
+                            <h3 id="aqi-value">3</h3>
+                            <p id="aqi-text" class="detail-sub">Low Risk</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card glass">
+                        <div class="detail-icon"><i class="fas fa-sunrise"></i></div>
+                        <div class="detail-info">
+                            <p class="detail-label">Sunrise</p>
+                            <h3 id="sunrise-time">5:28 AM</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card glass">
+                        <div class="detail-icon"><i class="fas fa-sunset"></i></div>
+                        <div class="detail-info">
+                            <p class="detail-label">Sunset</p>
+                            <h3 id="sunset-time">6:45 PM</h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7-Day Forecast Section -->
+            <section class="forecast-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar-week"></i> 7-Day Forecast</h2>
+                    <div class="forecast-controls">
+                        <button id="scroll-left" class="scroll-btn glass"><i class="fas fa-chevron-left"></i></button>
+                        <button id="scroll-right" class="scroll-btn glass"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="forecast-container">
+                    <div id="forecast-list" class="forecast-list">
+                        <!-- Forecast cards will be dynamically added here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Loading weather data...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
