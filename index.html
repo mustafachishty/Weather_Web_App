@@ -171,7 +171,17 @@
         <p>Loading weather data...</p>
     </div>
 
-    <script src="config.js"></script>
+    <!-- Configuration -->
+    <script>
+        const CONFIG = {
+            API_KEY: "cb021039a5a8414f92423240252712",
+            API_BASE_URL: "https://api.weatherapi.com/v1",
+            DEFAULT_CITY: "London",
+            FORECAST_DAYS: 7
+        };
+        Object.freeze(CONFIG);
+    </script>
+
     <script src="script.js"></script>
 </body>
 </html>
