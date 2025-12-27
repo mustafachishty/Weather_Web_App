@@ -1,5 +1,6 @@
-const apiKey = "cb021039a5a8414f92423240252712";
-let currentCity = 'Lahore';
+// Import configuration from config.js
+const apiKey = CONFIG.API_KEY;
+let currentCity = CONFIG.DEFAULT_CITY;
 let favorites = JSON.parse(localStorage.getItem('weatherFavorites')) || [];
 
 // DOM Elements
@@ -58,7 +59,7 @@ async function fetchWeather(city) {
     showLoading(true);
     try {
         const response = await fetch(
-            `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=7&aqi=yes`
+            `${CONFIG.API_BASE_URL}/forecast.json?key=${apiKey}&q=${city}&days=${CONFIG.FORECAST_DAYS}&aqi=yes`
         );
         
         if (!response.ok) throw new Error('City not found');
